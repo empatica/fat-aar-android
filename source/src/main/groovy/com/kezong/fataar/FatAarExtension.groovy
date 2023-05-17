@@ -26,5 +26,11 @@ class FatAarExtension {
      */
     boolean transitive = false
 
+    /**
+     * When specified, only the dependencies with the given group will be embedded in the fat aar.
+     * 
+     * Default is null
+     * @since 1.4.0
+     */
     Set<String> includedDependenciesGroups = null
 }
