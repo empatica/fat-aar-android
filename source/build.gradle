@@ -1,17 +1,18 @@
-apply plugin: 'groovy'
-apply from: "./upload.gradle"
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
+plugins {
+    id 'java-gradle-plugin'
+    id 'com.gradle.plugin-publish' version '0.12.0'
+    id 'maven-publish'
+    id 'groovy'
 }
 
 repositories {
     mavenCentral()
     google()
-    maven { url "https://plugins.gradle.org/m2/" }
+    gradlePluginPortal()
 }
+
+group = 'com.github.kezong'
+version = '1.4.0'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -19,4 +20,24 @@ dependencies {
     implementation localGroovy()
     implementation "org.javassist:javassist:3.27.0-GA"
     implementation 'com.android.tools.build:gradle:4.2.0'
+}
+
+pluginBundle {
+    website = 'https://github.com/kezong/fat-aar-android'
+    vcsUrl = 'https://github.com/kezong/fat-aar-android.git'
+    plugins {
+        fataar {
+            displayName = 'FatAar'
+            description = 'A gradle plugin that merge dependencies into the final aar file'
+        }
+    }
+}
+
+gradlePlugin {
+    plugins {
+        fataar {
+            id = 'com.kezong.fat-aar'
+            implementationClass = 'com.kezong.fataar.FatAarPlugin'
+        }
+    }
 }
