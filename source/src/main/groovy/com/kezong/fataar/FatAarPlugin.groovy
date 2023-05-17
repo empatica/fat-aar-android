@@ -69,9 +69,25 @@ class FatAarPlugin implements Plugin<Project> {
                 }
             }
 
-            if (!artifacts.isEmpty()) {
+            def groups = project.fataar.includedDependenciesGroups // Set<String>
+            def filteredArtifacts = new HashSet()
+            if (groups == null) {
+                filteredArtifacts = artifacts
+            } else {
+                artifacts.each { artifact ->
+                    // extract the Gradle string e.g. com.library:my-library:1.0.0
+                    def artifactId = artifact.id.getComponentIdentifier().getDisplayName()
+                    def isArtifactMatchingFilterGroups = groups.any { group ->
+                        artifactId.startsWith(group)
+                    }
+                    if (isArtifactMatchingFilterGroups) {
+                        filteredArtifacts.add(artifact)
+                    }
+                }
+            }
+            if (!filteredArtifacts.isEmpty()) {
                 def processor = new VariantProcessor(project, variant)
-                processor.processVariant(artifacts, firstLevelDependencies, transform)
+                processor.processVariant(filteredArtifacts, firstLevelDependencies, transform)
             }
         }
     }

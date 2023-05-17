@@ -25,4 +25,6 @@ class FatAarExtension {
      * @since 1.3.0
      */
     boolean transitive = false
+
+    Set<String> includedDependenciesGroups = null
 }
