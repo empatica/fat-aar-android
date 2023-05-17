@@ -288,27 +288,30 @@ class VariantProcessor {
                 def group = artifact.getModuleVersion().id.group.capitalize()
                 def name = artifact.name.capitalize()
                 String taskName = "explode${group}${name}${mVariant.name.capitalize()}"
-                Task explodeTask = mProject.tasks.create(taskName, Copy) {
-                    from mProject.zipTree(artifact.file.absolutePath)
-                    into zipFolder
+                def taskStillToBeCreated = mProject.tasks.findByName(taskName) == null
+                if (taskStillToBeCreated) {
+                    Task explodeTask = mProject.tasks.create(taskName, Copy) {
+                        from mProject.zipTree(artifact.file.absolutePath)
+                        into zipFolder
 
-                    doFirst {
-                        // Delete previously extracted data.
-                        zipFolder.deleteDir()
+                        doFirst {
+                            // Delete previously extracted data.
+                            zipFolder.deleteDir()
+                        }
                     }
-                }
 
-                if (dependencies.size() == 0) {
-                    explodeTask.dependsOn(prepareTask)
-                } else {
-                    explodeTask.dependsOn(dependencies.first())
+                    if (dependencies.size() == 0) {
+                        explodeTask.dependsOn(prepareTask)
+                    } else {
+                        explodeTask.dependsOn(dependencies.first())
+                    }
+                    Task javacTask = mVersionAdapter.getJavaCompileTask()
+                    javacTask.dependsOn(explodeTask)
+                    bundleTask.configure {
+                        dependsOn(explodeTask)
+                    }
+                    mExplodeTasks.add(explodeTask)
                 }
-                Task javacTask = mVersionAdapter.getJavaCompileTask()
-                javacTask.dependsOn(explodeTask)
-                bundleTask.configure {
-                    dependsOn(explodeTask)
-                }
-                mExplodeTasks.add(explodeTask)
             }
         }
     }
