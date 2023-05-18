@@ -11,7 +11,7 @@ repositories {
     gradlePluginPortal()
 }
 
-group = 'com.github.kezong'
+group = 'com.empatica'
 version = '1.4.0'
 
 dependencies {
@@ -36,7 +36,7 @@ pluginBundle {
 gradlePlugin {
     plugins {
         fataar {
-            id = 'com.kezong.fat-aar'
+            id = 'com.empatica.fat-aar'
             implementationClass = 'com.kezong.fataar.FatAarPlugin'
         }
     }
