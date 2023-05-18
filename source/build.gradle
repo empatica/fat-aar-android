@@ -1,7 +1,7 @@
 plugins {
     id 'java-gradle-plugin'
-    id 'com.gradle.plugin-publish' version '0.12.0'
     id 'maven-publish'
+    id 'com.gradle.plugin-publish' version '0.18.0'
     id 'groovy'
 }
 
@@ -11,8 +11,8 @@ repositories {
     gradlePluginPortal()
 }
 
-group = 'com.empatica'
-version = '1.4.0'
+group = "$PUBLISH_GROUP_ID"
+version = "$PUBLISH_VERSION"
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -25,19 +25,25 @@ dependencies {
 pluginBundle {
     website = 'https://github.com/kezong/fat-aar-android'
     vcsUrl = 'https://github.com/kezong/fat-aar-android.git'
-    plugins {
-        fataar {
-            displayName = 'FatAar'
-            description = 'A gradle plugin that merge dependencies into the final aar file'
-        }
-    }
 }
 
 gradlePlugin {
     plugins {
         fataar {
+            displayName = 'FatAar'
+            description = 'A gradle plugin that merge dependencies into the final aar file'
             id = 'com.empatica.fat-aar'
             implementationClass = 'com.kezong.fataar.FatAarPlugin'
         }
     }
 }
+
+publishing {
+    repositories {
+        maven {
+            name = 'fat-aar-android'
+            url = '/Users/mattiapini/Desktop/fat-aar-adndroid'
+        }
+    }
+}
+
