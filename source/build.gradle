@@ -42,7 +42,7 @@ publishing {
     repositories {
         maven {
             name = 'fat-aar-android'
-            url = '/Users/mattiapini/Desktop/fat-aar-adndroid'
+            url = '../fat-aar-adndroid'
         }
     }
 }
