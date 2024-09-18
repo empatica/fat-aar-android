@@ -41,7 +41,9 @@ gradlePlugin {
 }
 
 java {
-    version = JavaVersion.VERSION_11
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
 }
 
 publishing {
