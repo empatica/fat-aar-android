@@ -40,11 +40,15 @@ gradlePlugin {
     }
 }
 
+java {
+    version = JavaVersion.VERSION_11
+}
+
 publishing {
     repositories {
         maven {
             name = 'fat-aar-android'
-            url = '../fat-aar-adndroid'
+            url = '../fat-aar-android'
         }
     }
 }
