@@ -96,7 +96,9 @@ public class RClassesTransform extends Transform {
 
     @Override
     public Set<? super QualifiedContent.Scope> getScopes() {
-        return ImmutableSet.of(QualifiedContent.Scope.PROJECT);
+        Set<QualifiedContent.Scope> scopes = new HashSet<>();
+        scopes.add(QualifiedContent.Scope.PROJECT);
+        return scopes;
     }
 
     @Override
