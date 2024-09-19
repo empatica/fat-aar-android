@@ -1,19 +1,15 @@
 package com.kezong.demo.libaar;
 
-import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
 
-public class User extends BaseObservable {
+public class User {
     private String name;
     private String sex;
 
-    @Bindable
 
     public String getName() {
         return name;
     }
 
-    @Bindable
     public String getSex() {
         return sex;
     }

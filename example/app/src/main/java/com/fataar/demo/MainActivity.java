@@ -25,8 +25,8 @@ import com.facebook.imagepipeline.image.CloseableImage;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.kezong.demo.javalib.JavaLib1;
-import com.kezong.demo.lib.MainLibClass;
 import com.kezong.demo.lib.KotlinInMain;
+import com.kezong.demo.lib.MainLibClass;
 import com.kezong.demo.libaar.AarFlavor;
 import com.kezong.demo.libaar.AarLibClass;
 import com.kezong.demo.libaar.KotlinTest2;
@@ -167,7 +167,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void testResourceMerge2() {
-        String text = this.getResources().getString(R.string.app_name_aar2);
+        String text = this.getResources().getString(com.kezong.demo.lib.R.string.app_name_aar2);
         addTestView("resource2", text, TextUtils.equals(text, "lib-aar2"));
     }
 

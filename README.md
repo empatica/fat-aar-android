@@ -1,28 +1,28 @@
 # fat-aar-android
 
-[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/kezong/fat-aar-android/blob/master/LICENSE)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.kezong/fat-aar/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.kezong/fat-aar)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/aasitnikov/fat-aar-android/blob/master/LICENSE)
+[![JitPack](https://jitpack.io/v/aasitnikov/fat-aar-android.svg)](https://jitpack.io/#aasitnikov/fat-aar-android)
 
-- [中文文档](./README_CN.md)
+This fork adds support for AGP 8.0+
 
->**I am no longer engaged in research and development, so the project will not be updated and maintained.<br>**
->**You can try to use the following steps to reference the remote plugin. If it doesn't work on the new version of gradle, you can fork or download this project to modify it, the code of this project is not very complex.**
->
->**P.S. Hope Google can support this damn feature as soon as possible.**
+The solution of merging aar works with [AGP][3] 8.5 and Gradle 8.7
 
-The solution of merging aar works with [AGP][3] `3.0` and higher. (Tested in AGP 3.0 - 7.1.0, and Gradle 4.9 - 7.3)
 ## Getting Started
 
 ### Step 1: Add classpath
 #### Add snippet below to your root build script file:
-For Maven Central (The lastest release is available on [Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.kezong/fat-aar)):
 ```groovy
 buildscript {
     repositories {
-        mavenCentral()
+        maven {
+            setUrl("https://jitpack.io")
+            content {
+                includeGroup("com.github.aasitnikov")
+            }
+        }
     }
     dependencies {
-        classpath 'com.github.kezong:fat-aar:1.3.8'
+        classpath 'com.github.aasitnikov:fat-aar-android:1.4.1'
     }
 }
 ```
@@ -116,27 +116,34 @@ See [anatomy of an aar file here][2].
 
 
 ## Gradle Version Support
-| Version | Gradle Plugin | Gradle |
-| :--------: | :--------:|:-------:|
-| 1.0.1 | 3.1.0 - 3.2.1 | 4.4 - 6.0 |
-| 1.1.6 | 3.1.0 - 3.4.1 | 4.4 - 6.0 |
-| 1.1.10| 3.0.0 - 3.4.1 | 4.1 - 6.0 |
-| 1.2.6 | 3.0.0 - 3.5.0 | 4.1 - 6.0 |
-| 1.2.8 | 3.0.0 - 3.5.9 | 4.1 - 6.8 |
-| 1.2.11 - 1.2.14 | 3.0.0 - 3.6.9 | 4.1 - 6.8 |
-| 1.2.15 - 1.2.16 | 3.0.0 - 4.0.2 | 4.1 - 6.8 |
-| 1.2.17 | 3.0.0 - 4.0.2 | 4.9 - 6.8 |
-| 1.2.18+ | 3.0.0 - 4.1.0 | 4.9 - 6.8 |
-| 1.3.+ | 3.0.0 - 4.1.0 | 4.9 - 6.8 |
-| 1.3.4 - 1.3.5 | 3.0.0 - 4.1.0 | 4.9+ |
-| 1.3.6 | 3.0.0 - 4.2.0 | 4.9+ |
-| 1.3.8 | 3.0.0+ | 4.9+ |
+|     Version     | Android Gradle Plugin |  Gradle   |
+|:---------------:|:---------------------:|:---------:|
+|      1.4.1      |          8.5          |    8.7    |
+|      1.4.0      |          8.3          |    8.6    |
+|      1.3.8      |        3.0.0+         |   4.9+    |
+|      1.3.6      |     3.0.0 - 4.2.0     |   4.9+    |
+|  1.3.4 - 1.3.5  |     3.0.0 - 4.1.0     |   4.9+    |
+|      1.3.+      |     3.0.0 - 4.1.0     | 4.9 - 6.8 |
+|     1.2.18+     |     3.0.0 - 4.1.0     | 4.9 - 6.8 |
+|     1.2.17      |     3.0.0 - 4.0.2     | 4.9 - 6.8 |
+| 1.2.15 - 1.2.16 |     3.0.0 - 4.0.2     | 4.1 - 6.8 |
+| 1.2.11 - 1.2.14 |     3.0.0 - 3.6.9     | 4.1 - 6.8 |
+|      1.2.8      |     3.0.0 - 3.5.9     | 4.1 - 6.8 |
+|      1.2.6      |     3.0.0 - 3.5.0     | 4.1 - 6.0 |
+|     1.1.10      |     3.0.0 - 3.4.1     | 4.1 - 6.0 |
+|      1.1.6      |     3.1.0 - 3.4.1     | 4.4 - 6.0 |
+|      1.0.1      |     3.1.0 - 3.2.1     | 4.4 - 6.0 |
+
 
 The following link which version of Gradle is required for each version of the Android Gradle plugin. For the best performance, you should use the latest possible version of both Gradle and the plugin.
 
-[Plugin version and Required Gradle version](https://developer.android.google.cn/studio/releases/gradle-plugin.html)
+[Plugin version and Required Gradle version](https://developer.android.com/build/releases/gradle-plugin)
 
 ## Version Log
+- [1.4.1](<https://github.com/aasitnikov/fat-aar-android/releases/tag/1.4.1>)
+  - Support AGP 8.5
+- [1.4.0](<https://github.com/aasitnikov/fat-aar-android/releases/tag/1.4.0>)
+  - Support AGP 8.3
 - [1.3.8](<https://github.com/kezong/fat-aar-android/releases/tag/v1.3.8>)
   - Fix the issue that plugin cannot be used in jdk 1.8 [#371](https://github.com/kezong/fat-aar-android/issues/371)
 - [1.3.7](<https://github.com/kezong/fat-aar-android/releases/tag/v1.3.7>)
@@ -245,8 +252,10 @@ The following link which version of Gradle is required for each version of the A
 
 - [android-fat-aar][1]
 - [fat-aar-plugin][4]
+- [fat-aar-android][5]
 
 [1]: https://github.com/adwiv/android-fat-aar
 [2]: https://developer.android.com/studio/projects/android-library.html#aar-contents
 [3]: https://developer.android.com/studio/releases/gradle-plugin.html
 [4]: https://github.com/Vigi0303/fat-aar-plugin
+[5]: https://github.com/kezong/fat-aar-android

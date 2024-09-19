@@ -7,6 +7,12 @@ import org.gradle.api.ProjectConfigurationException
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ResolvedArtifact
 import org.gradle.api.artifacts.ResolvedDependency
+import org.gradle.api.internal.file.FileResolver
+import org.gradle.api.internal.tasks.TaskDependencyFactory
+import org.gradle.api.provider.MapProperty
+import org.gradle.internal.model.CalculatedValueContainerFactory
+
+import javax.inject.Inject
 
 /**
  * plugin entry
@@ -27,6 +33,21 @@ class FatAarPlugin implements Plugin<Project> {
 
     private final Collection<Configuration> embedConfigurations = new ArrayList<>()
 
+    private MapProperty<String, List<AndroidArchiveLibrary>> variantPackagesProperty;
+
+    private CalculatedValueContainerFactory calculatedValueContainerFactory
+
+    private TaskDependencyFactory taskDependencyFactory
+
+    private FileResolver fileResolver
+
+    @Inject
+    FatAarPlugin(CalculatedValueContainerFactory calculatedValueContainerFactory, TaskDependencyFactory taskDependencyFactory, FileResolver fileResolver) {
+        this.calculatedValueContainerFactory = calculatedValueContainerFactory
+        this.taskDependencyFactory = taskDependencyFactory
+        this.fileResolver = fileResolver
+    }
+
     @Override
     void apply(Project project) {
         this.project = project
@@ -42,9 +63,14 @@ class FatAarPlugin implements Plugin<Project> {
     }
 
     private registerTransform() {
-        transform = new RClassesTransform(project)
-        // register in project.afterEvaluate is invalid.
-        project.android.registerTransform(transform)
+        variantPackagesProperty = project.objects.mapProperty(String.class, List.class)
+        if (FatUtils.compareVersion(VersionAdapter.AGPVersion, "8.0.0") >= 0) {
+            FatAarPluginHelper.registerAsmTransformation(project, variantPackagesProperty)
+        } else {
+            transform = new RClassesTransform(project)
+            // register in project.afterEvaluate is invalid.
+            project.android.registerTransform(transform)
+        }
     }
 
     private void doAfterEvaluate() {
@@ -70,7 +96,7 @@ class FatAarPlugin implements Plugin<Project> {
             }
 
             if (!artifacts.isEmpty()) {
-                def processor = new VariantProcessor(project, variant)
+                def processor = new VariantProcessor(project, variant, variantPackagesProperty)
                 processor.processVariant(artifacts, firstLevelDependencies, transform)
             }
         }
@@ -140,7 +166,7 @@ class FatAarPlugin implements Plugin<Project> {
             }
 
             if (!match) {
-                def flavorArtifact = FlavorArtifact.createFlavorArtifact(project, variant, dependency)
+                def flavorArtifact = FlavorArtifact.createFlavorArtifact(project, variant, dependency, calculatedValueContainerFactory, fileResolver, taskDependencyFactory)
                 if (flavorArtifact != null) {
                     artifactList.add(flavorArtifact)
                 }
