@@ -1,27 +1,23 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion = 34
+
+    namespace "com.fataar.demo"
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility 17
+        targetCompatibility 17
     }
 
     defaultConfig {
         applicationId "com.fataar.demo"
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
-
-        externalNativeBuild {
-            ndk {
-                abiFilters "armeabi-v7a"
-            }
-        }
     }
 
     buildTypes {
@@ -32,11 +28,11 @@ android {
     }
 
     buildFeatures {
-        dataBinding = true
+        viewBinding = true
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
@@ -48,6 +44,6 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation('androidx.appcompat:appcompat:1.2.0')
+    implementation('androidx.appcompat:appcompat:1.6.1')
     implementation(name: 'fat-aar-final', ext: 'aar')
 }

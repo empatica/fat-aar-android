@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.kezong.fat-aar'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 repositories {
     flatDir {
@@ -10,11 +9,13 @@ repositories {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion = 34
+
+    namespace "com.kezong.demo.lib"
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 27
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0.0"
     }
@@ -26,7 +27,7 @@ android {
         }
     }
 
-    flavorDimensions "default"
+    flavorDimensions = ["default"]
 
     productFlavors {
         flavor1 {
@@ -43,6 +44,11 @@ android {
         exclude 'lib/x86_64/*.so'
         exclude 'lib/armeabi/*.so'
         exclude 'lib/arm64-v8a/*.so'
+    }
+
+    compileOptions {
+        sourceCompatibility 17
+        targetCompatibility 17
     }
 }
 
@@ -86,7 +92,7 @@ dependencies {
     // local full aar dependency, just build in debug
     debugEmbed (name:'lib-aar-local2', ext:'aar')
     // remote dependency
-    embed 'com.google.guava:guava:20.0'
+    implementation 'com.google.guava:guava:20.0'
     // remote aar dependency
     embed ('com.facebook.fresco:fresco:1.12.0') {
         // exclude any group or module
@@ -99,6 +105,6 @@ dependencies {
         transitive = false
     }
     // don't want to embed in
-    implementation('androidx.appcompat:appcompat:1.2.0')
+    implementation('androidx.appcompat:appcompat:1.6.1')
 }
 

@@ -1,8 +1,6 @@
 package com.kezong.demo.libaar;
 
 import android.app.Activity;
-import androidx.databinding.DataBindingUtil;
-
 import android.os.Bundle;
 
 import com.kezong.demo.libaar.databinding.DatabindingBinding;
@@ -14,10 +12,12 @@ public class TestActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.databinding);
+        binding = DatabindingBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         User user = new User();
         user.setName("Hello World");
         user.setSex("[success][dataBinding] male");
-        binding.setUser(user);
+        binding.name.setText(user.getName());
+        binding.sex.setText(user.getSex());
     }
 }

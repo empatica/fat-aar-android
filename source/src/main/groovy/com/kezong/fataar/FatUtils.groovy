@@ -14,6 +14,10 @@ class FatUtils {
         sProject.logger.error("[fat-aar]${msg}")
     }
 
+    def static logError(def msg, Throwable err) {
+        sProject.logger.error("[fat-aar]${msg}", err)
+    }
+
     def static logInfo(def msg) {
         sProject.logger.info("[fat-aar]${msg}")
     }
