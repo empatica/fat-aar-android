@@ -1,7 +1,7 @@
 # fat-aar-android
 
-[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/aasitnikov/fat-aar-android/blob/master/LICENSE)
-[![JitPack](https://jitpack.io/v/aasitnikov/fat-aar-android.svg)](https://jitpack.io/#aasitnikov/fat-aar-android)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/empatica/fat-aar-android/blob/master/LICENSE)
+[![JitPack](https://jitpack.io/v/empatica/fat-aar-android.svg)](https://jitpack.io/#empatica/fat-aar-android)
 
 This fork adds support for AGP 8.0+
 
@@ -10,27 +10,32 @@ The solution of merging aar works with [AGP][3] 8.5 and Gradle 8.7
 ## Getting Started
 
 ### Step 1: Add classpath
-#### Add snippet below to your root build script file:
-```groovy
+
+#### Add snippet below to your root project build.gradle.kts file:
+
+```kotlin
 buildscript {
     repositories {
-        maven {
-            setUrl("https://jitpack.io")
-            content {
-                includeGroup("com.github.aasitnikov")
-            }
-        }
+        ...
+        maven { setUrl("https://jitpack.io") }
     }
     dependencies {
-        classpath 'com.github.aasitnikov:fat-aar-android:1.4.1'
+
+        classpath("com.github.empatica.fat-aar-android:com.empatica.fat-aar.gradle.plugin:<version>")
     }
 }
 ```
 
 ### Step 2: Add plugin
-Add snippet below to the `build.gradle` of your main android library:
+
+Add the plugin to the `build.gradle` of your main android library:
 ```groovy
-apply plugin: 'com.kezong.fat-aar'
+plugins {
+    id("com.android.library")
+    ...
+
+    id("com.empatica.fat-aar")
+}
 ```
 
 ### Step 3: Embed dependencies
@@ -69,6 +74,7 @@ If you want to include local transitive dependencies in final artifact, you must
 For example, mainLib depend on subLib1, subLib1 depend on subLib2, If you want include all dependencies in the final artifact, you must add `embed` for subLib1 and subLib2 in mainLib `build.gradle`
 
 #### Remote Dependency
+
 If you want to inlcude all of the remote transitive dependencies which are in POM file, you need change the `transitive` value to true in your `build.gradle`, like this:
 ```groovy
 fataar {
@@ -88,6 +94,24 @@ embed('com.facebook.fresco:fresco:1.11.0') {
     transitive = false
     // exclude any group or module
     exclude(group:'com.facebook.soloader', module:'soloader')
+}
+```
+
+
+### Include only specified artifact groups
+
+It may be possible that if you transitively embed a dependency in you project, you end up embedding also dependencies that are shared among other embedded modules. 
+For example, working with dependencies that use `androidx.*` artifacts will result in embedding `androidx.*` artifacts multiple times. This will eventually break the build due to artifacts duplication. 
+
+If you want to include only artifacts of a particular group, use this directive in the `fataar` configuration block:
+
+```kotlin
+fataar {
+    // transitively embed all the dependencies 
+    transitive = true 
+
+    // transitively include only the dependencies with group `com.example` and `com.mycompany`
+    includedDependenciesGroups = setOf("com.example", "com.mycompany")
 }
 ```
 
@@ -140,6 +164,8 @@ The following link which version of Gradle is required for each version of the A
 [Plugin version and Required Gradle version](https://developer.android.com/build/releases/gradle-plugin)
 
 ## Version Log
+- [2.0.0](<https://github.com/empatica/fat-aar-android/releases/tag/2.0.0>)
+  - Empatica fork and support for transitive inclusion of specified dependencies groups
 - [1.4.1](<https://github.com/aasitnikov/fat-aar-android/releases/tag/1.4.1>)
   - Support AGP 8.5
 - [1.4.0](<https://github.com/aasitnikov/fat-aar-android/releases/tag/1.4.0>)
@@ -250,7 +276,8 @@ The following link which version of Gradle is required for each version of the A
 
 ## Thanks
 
-- [android-fat-aar][1]
+- [aasitnikov/android-fat-aar][6]
+- [kezong/android-fat-aar][1]
 - [fat-aar-plugin][4]
 - [fat-aar-android][5]
 
@@ -259,3 +286,4 @@ The following link which version of Gradle is required for each version of the A
 [3]: https://developer.android.com/studio/releases/gradle-plugin.html
 [4]: https://github.com/Vigi0303/fat-aar-plugin
 [5]: https://github.com/kezong/fat-aar-android
+[6]: https://github.com/aasitnikov/fat-aar-android
